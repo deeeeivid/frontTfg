@@ -9,5 +9,9 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'frontTfg';
+  title = 'Bienvenudi a angular';
+
+  curso = 'Trabajo de fin de grado';
+  autor = 'David ';
+
 }
