@@ -8,5 +8,5 @@ import {Component} from "@angular/core";
   }
 )
 export class HeaderComponent{
-  title = 'TFG David'
+  title = 'Dmzeta App'
 }
