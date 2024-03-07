@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Cliente} from "./cliente";
-import {NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf, UpperCasePipe} from "@angular/common";
 import {ClienteService} from "./cliente.service";
 import {RouterLink} from "@angular/router";
 import Swal from "sweetalert2";
@@ -12,7 +12,9 @@ import Swal from "sweetalert2";
   imports: [
     NgForOf,
     RouterLink,
-    NgIf
+    NgIf,
+    UpperCasePipe,
+    DatePipe
   ]
 })
 export class ClientesComponent implements OnInit {
