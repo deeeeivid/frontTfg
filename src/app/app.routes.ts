@@ -2,8 +2,10 @@ import {Routes} from '@angular/router';
 import {DirectivaComponent} from "./directiva/directiva.component";
 import {ClientesComponent} from "./clientes/clientes.component";
 import {FormComponent} from "./clientes/form.component";
+import {registerLocaleData} from "@angular/common";
+import localeES from "@angular/common/locales/es";
 
-
+registerLocaleData(localeES, 'es');
 export const routes: Routes = [
   {path: '', redirectTo: '/clientes', pathMatch: 'full'},
   {path: 'directivas', component: DirectivaComponent},
