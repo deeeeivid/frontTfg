@@ -4,14 +4,15 @@ import {FormsModule} from "@angular/forms";
 import {ClienteService} from "./cliente.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import swal from 'sweetalert2';
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-form',
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './form.component.html'
 })
@@ -19,6 +20,7 @@ export class FormComponent implements OnInit {
 
   public cliente = new Cliente();
   public titulo = "Crear cliente";
+  public errores: string[];
 
   constructor(
     private clienteService: ClienteService,
@@ -47,6 +49,11 @@ export class FormComponent implements OnInit {
       cliente => {
         this.router.navigate(['/clientes'])
         swal.fire('Nuevo cliente', `El cliente ${cliente.nombre} ha sido creado con éxito!`, 'success')
+      },
+      error => {
+        this.errores = error.error.errors as string[];
+        console.error('Codigo del error ' + error.status);
+        console.error(error.error.errors);
       });
   }
 
@@ -55,6 +62,10 @@ export class FormComponent implements OnInit {
       json => {
         this.router.navigate(['/clientes'])
         swal.fire('Cliente actualizado', `${json.mensaje}: ${json.cliente.nombre}`, 'success')
+      }, error => {
+        this.errores = error.error.errors as string[];
+        console.error('Codigo del error ' + error.status);
+        console.error(error.error.errors);
       });
   }
 
