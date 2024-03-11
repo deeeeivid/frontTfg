@@ -20,8 +20,8 @@ export class ClienteService {
 
   }
 
-  getClientes(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.urlEndpoint);
+  getClientes(page: number): Observable<any> {
+    return this.http.get(this.urlEndpoint + '/page/' + page);
   }
 
   create(cliente: Cliente): Observable<Cliente> {
