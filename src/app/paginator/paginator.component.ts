@@ -1,13 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {IPagina} from "./paginator.models";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'paginator-nav',
   standalone: true,
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    RouterLink,
+    NgClass
   ],
   templateUrl: './paginator.component.html'
 })
