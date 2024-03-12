@@ -4,6 +4,8 @@ import {DatePipe, NgForOf, NgIf, UpperCasePipe} from "@angular/common";
 import {ClienteService} from "./cliente.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import Swal from "sweetalert2";
+import {PaginatorComponent} from "../paginator/paginator.component";
+import {IPagina} from "../paginator/paginator.models";
 
 @Component({
   selector: 'app-clientes',
@@ -14,12 +16,14 @@ import Swal from "sweetalert2";
     RouterLink,
     NgIf,
     UpperCasePipe,
-    DatePipe
+    DatePipe,
+    PaginatorComponent
   ]
 })
 export class ClientesComponent implements OnInit {
 
   clientes: Cliente[];
+  paginador: IPagina;
 
   constructor(
     private clienteService: ClienteService,
@@ -33,8 +37,9 @@ export class ClientesComponent implements OnInit {
         page = 0;
       }
       this.clienteService.getClientes(page)
-        .subscribe(clientes => {
-          this.clientes = clientes.content as Cliente[];
+        .subscribe(response => {
+          this.clientes = response.content as Cliente[];
+          this.paginador = response;
         });
     });
   }
