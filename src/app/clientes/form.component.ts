@@ -5,6 +5,8 @@ import {ClienteService} from "./cliente.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import swal from 'sweetalert2';
 import {NgForOf, NgIf} from "@angular/common";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
 
 @Component({
   selector: 'app-form',
@@ -12,7 +14,14 @@ import {NgForOf, NgIf} from "@angular/common";
   imports: [
     FormsModule,
     NgIf,
-    NgForOf
+    NgForOf,
+    MatFormField,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatInput,
+    MatDatepickerInput,
+    MatHint,
+    MatSuffix,
   ],
   templateUrl: './form.component.html'
 })
