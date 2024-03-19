@@ -3,11 +3,15 @@ import {Cliente} from "../cliente";
 import {ClienteService} from "../cliente.service";
 import {ActivatedRoute} from "@angular/router";
 import swal from "sweetalert2";
+import {DatePipe, NgIf} from "@angular/common";
 
 @Component({
   selector: 'detalle-cliente',
   standalone: true,
-  imports: [],
+  imports: [
+    DatePipe,
+    NgIf
+  ],
   templateUrl: './detalle.component.html',
   styleUrl: './detalle.component.css'
 })
