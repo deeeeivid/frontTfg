@@ -8,10 +8,12 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 
 registerLocaleData(localeES, 'es');
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient(), {
-    provide: LOCALE_ID,
-    useValue: 'es'
-  }, provideAnimationsAsync()]
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimationsAsync(),
+    {provide: LOCALE_ID, useValue: 'es'}
+  ]
 };
 
 
