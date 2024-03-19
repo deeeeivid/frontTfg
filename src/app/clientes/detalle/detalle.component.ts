@@ -3,14 +3,16 @@ import {Cliente} from "../cliente";
 import {ClienteService} from "../cliente.service";
 import {ActivatedRoute} from "@angular/router";
 import swal from "sweetalert2";
-import {DatePipe, NgIf} from "@angular/common";
+import {DatePipe, NgIf, NgStyle} from "@angular/common";
+import {HttpEventType} from "@angular/common/http";
 
 @Component({
   selector: 'detalle-cliente',
   standalone: true,
   imports: [
     DatePipe,
-    NgIf
+    NgIf,
+    NgStyle
   ],
   templateUrl: './detalle.component.html',
   styleUrl: './detalle.component.css'
@@ -21,6 +23,7 @@ export class DetalleComponent implements OnInit {
   titulo: string = "Detalle del cliente";
 
   protected fotoSeleccionada: File;
+  protected progreso = 0;
 
   constructor(
     private clienteService: ClienteService,
@@ -40,6 +43,7 @@ export class DetalleComponent implements OnInit {
 
   seleccionarFoto(event) {
     this.fotoSeleccionada = event.target.files[0];
+    this.progreso = 0;
     console.log(this.fotoSeleccionada);
     if (this.fotoSeleccionada.type.indexOf('image') < 0) {
       swal.fire('Error al seleccionar imagen: ', 'El archivo debe ser del tipo imagen', 'error');
@@ -51,9 +55,15 @@ export class DetalleComponent implements OnInit {
     if (!this.fotoSeleccionada) {
       swal.fire('Error de Subida: ', 'Debe seleccionar una foto', 'error');
     } else {
-      this.clienteService.subirFoto(this.fotoSeleccionada, this.cliente.id).subscribe(cliente => {
-        this.cliente = cliente;
-        swal.fire('La foto se ha subido correctamente.', `La foto se ha subido con éxito: ${this.cliente.foto}`, 'success');
+      this.clienteService.subirFoto(this.fotoSeleccionada, this.cliente.id).subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progreso = Math.round((event.loaded / event.total) * 100);
+        } else if (event.type === HttpEventType.Response) {
+          let response: any = event.body;
+
+          this.cliente = response.cliente as Cliente;
+          swal.fire('La foto se ha subido correctamente.', response.mensaje, 'success');
+        }
       })
     }
   }
