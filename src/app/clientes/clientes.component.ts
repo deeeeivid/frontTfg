@@ -6,6 +6,8 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import Swal from "sweetalert2";
 import {PaginatorComponent} from "../paginator/paginator.component";
 import {IPagina} from "../paginator/paginator.models";
+import {DetalleComponent} from "./detalle/detalle.component";
+import {ModalService} from "./detalle/modal.service";
 
 @Component({
   selector: 'app-clientes',
@@ -17,16 +19,19 @@ import {IPagina} from "../paginator/paginator.models";
     NgIf,
     UpperCasePipe,
     DatePipe,
-    PaginatorComponent
+    PaginatorComponent,
+    DetalleComponent
   ]
 })
 export class ClientesComponent implements OnInit {
 
   clientes: Cliente[];
   paginador: IPagina;
+  clienteSeleccionado: Cliente;
 
   constructor(
     private clienteService: ClienteService,
+    private modalService: ModalService,
     private activatedRoute: ActivatedRoute) {
   }
 
@@ -73,6 +78,11 @@ export class ClientesComponent implements OnInit {
 
       }
     });
+  }
+
+  abrirModal(cliente: Cliente) {
+    this.clienteSeleccionado = cliente;
+    this.modalService.abrirModal();
   }
 
 }
