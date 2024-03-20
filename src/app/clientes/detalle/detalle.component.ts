@@ -52,8 +52,8 @@ export class DetalleComponent implements OnInit {
           this.progreso = Math.round((event.loaded / event.total) * 100);
         } else if (event.type === HttpEventType.Response) {
           let response: any = event.body;
-
           this.cliente = response.cliente as Cliente;
+          this.modalService.notificarUpload.emit(this.cliente);
           swal.fire('La foto se ha subido correctamente.', response.mensaje, 'success');
         }
       })
