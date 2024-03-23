@@ -7,6 +7,7 @@ import swal from 'sweetalert2';
 import {NgForOf, NgIf} from "@angular/common";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
+import {Region} from "./region";
 
 @Component({
   selector: 'app-form',
@@ -28,6 +29,7 @@ import {MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/inpu
 export class FormComponent implements OnInit {
 
   public cliente = new Cliente();
+  regiones: Region[]
   public titulo = "Crear cliente";
   public errores: string[];
 
@@ -40,6 +42,7 @@ export class FormComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarCliente();
+    this.cargarRegiones();
   }
 
   cargarCliente(): void {
@@ -50,10 +53,16 @@ export class FormComponent implements OnInit {
           (cliente) => this.cliente = cliente
         )
       }
-    })
+    });
   }
 
-  public create(): void {
+  cargarRegiones() {
+    this.clienteService.getRegiones().subscribe(regiones => {
+      this.regiones = regiones;
+    });
+  }
+
+  create(): void {
     this.clienteService.create(this.cliente).subscribe(
       cliente => {
         this.router.navigate(['/clientes'])
@@ -66,7 +75,7 @@ export class FormComponent implements OnInit {
       });
   }
 
-  public update(): void {
+  update(): void {
     this.clienteService.update(this.cliente).subscribe(
       json => {
         this.router.navigate(['/clientes'])
