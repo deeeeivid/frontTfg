@@ -12,7 +12,7 @@ import {Region} from "./region";
 export class ClienteService {
 
   private urlEndpoint = 'http://localhost:8080/api/clientes';
-  private hhtpHeaders = new HttpHeaders({'Content-type': 'application/json'})
+  private httpHeaders = new HttpHeaders({'Content-type': 'application/json'})
 
   constructor(
     private http: HttpClient,
@@ -33,7 +33,7 @@ export class ClienteService {
   }
 
   create(cliente: Cliente): Observable<Cliente> {
-    return this.http.post(this.urlEndpoint, cliente, {headers: this.hhtpHeaders}).pipe(
+    return this.http.post(this.urlEndpoint, cliente, {headers: this.httpHeaders}).pipe(
       map((response: any) => response.cliente as Cliente),
       catchError(e => {
 
@@ -69,7 +69,7 @@ export class ClienteService {
   }
 
   update(cliente: Cliente): Observable<any> {
-    return this.http.put<any>(`${this.urlEndpoint}/${cliente.id}`, cliente, {headers: this.hhtpHeaders}).pipe(
+    return this.http.put<any>(`${this.urlEndpoint}/${cliente.id}`, cliente, {headers: this.httpHeaders}).pipe(
       catchError(e => {
 
         if (this.isNoAutorizado(e)) {
@@ -88,7 +88,7 @@ export class ClienteService {
   }
 
   delete(id: number): Observable<Cliente> {
-    return this.http.delete<Cliente>(`${this.urlEndpoint}/${id}`, {headers: this.hhtpHeaders}).pipe(
+    return this.http.delete<Cliente>(`${this.urlEndpoint}/${id}`, {headers: this.httpHeaders}).pipe(
       catchError(e => {
 
         if (this.isNoAutorizado(e)) {
