@@ -29,17 +29,26 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log(this.usuario);
     if (this.usuario.username == null || this.usuario.password == null) {
       swal.fire('Error Login', 'Username o password vacias!', 'error')
       return;
     }
 
     this.authService.login(this.usuario).subscribe(
-      () => {
+      response => {
         this.router.navigate(['/clientes']);
-        swal.fire('Login', `Hola ${this.usuario.username}, has iniciado sesión con éxito`, 'success');
+
+        this.authService.guardarUsuario(response.accessToken);
+        this.authService.guardarToken(response.accessToken);
+        let usuario = this.authService.usuario;
+
+        swal.fire('Login', `Hola ${usuario.username}, has iniciado sesión con éxito`, 'success');
+      }, error => {
+        if (error.status == 401 || error.status == 403) {
+          swal.fire('Error Login', `Usuario o clave incorrecta`, 'error');
+        }
       }
     );
+
   }
 }
