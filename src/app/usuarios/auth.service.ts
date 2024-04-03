@@ -60,4 +60,9 @@ export class AuthService {
     }
     return null;
   }
+
+  isAuthenticated(): boolean {
+    let payload = this.obtenerDatosToken(this.token);
+    return payload != null && payload.sub && payload.sub.length > 0;
+  }
 }
