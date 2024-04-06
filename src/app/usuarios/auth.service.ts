@@ -65,4 +65,10 @@ export class AuthService {
     let payload = this.obtenerDatosToken(this.token);
     return payload != null && payload.sub && payload.sub.length > 0;
   }
+
+  logOut(){
+    this._token = null;
+    this._usuario = null;
+    sessionStorage.clear();
+  }
 }
