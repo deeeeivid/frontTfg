@@ -1,20 +1,19 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Usuario} from "./usuario";
 import {Observable} from "rxjs";
-import {UsuarioService} from "./usuario.service";
+import swal from "sweetalert2";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private urlEndpoint = 'http://localhost:8080/auth/generateToken';
   private httpHeaders = new HttpHeaders({'Content-type': 'application/json'});
   private _usuario: Usuario;
   private _token: string;
 
-  constructor(private http: HttpClient, private userService: UsuarioService) {
+  constructor(private http: HttpClient) {
   }
 
   public get usuario(): Usuario {
@@ -38,15 +37,32 @@ export class AuthService {
   }
 
   login(usuario: Usuario): Observable<any> {
-    return this.http.post(this.urlEndpoint, usuario, {headers: this.httpHeaders});
+    let urlEndpoint = 'http://localhost:8080/auth/generateToken';
+    return this.http.post(urlEndpoint, usuario, {headers: this.httpHeaders});
   }
 
-  guardarUsuario(accessToken: string): void {
+  guardarSessionStorage(accessToken: string) {
     let payload = this.obtenerDatosToken(accessToken);
-    this.userService.getUsuario(payload.sub).subscribe((usuario) => {
-      this._usuario = usuario;
-      sessionStorage.setItem('usuario', JSON.stringify(this._usuario));
-    });
+    this.guardarUsuario(payload, accessToken);
+    this.guardarToken(accessToken);
+    swal.fire('Login', `Hola ${payload.sub}, has iniciado sesión con éxito`, 'success');
+  }
+
+  guardarUsuario(payload: any, accessToken: string): void {
+    let httpHeaders = new HttpHeaders();
+    let urlEndpoint = "http://localhost:8080/user/obtener";
+    let queryParams = new HttpParams();
+
+    queryParams = queryParams.append("username", payload.sub);
+    if (accessToken != null) {
+      httpHeaders = httpHeaders.append('Authorization', 'Bearer ' + accessToken);
+    }
+
+    this.http.get<Usuario>(urlEndpoint, {headers: httpHeaders, params: queryParams})
+      .subscribe((usuario) => {
+        this._usuario = usuario;
+        sessionStorage.setItem('usuario', JSON.stringify(this._usuario));
+      });
   }
 
   guardarToken(accessToken: string): void {
@@ -66,7 +82,7 @@ export class AuthService {
     return payload != null && payload.sub && payload.sub.length > 0;
   }
 
-  logOut(){
+  logOut() {
     this._token = null;
     this._usuario = null;
     sessionStorage.clear();
