@@ -22,9 +22,9 @@ export class ClienteService {
   ) {
   }
 
-  private agregarAuthorizationHeader(){
+  private agregarAuthorizationHeader() {
     let token = this.authService.token;
-    if (token != null){
+    if (token != null) {
       return this.httpHeaders.append('Authorization', 'Bearer ' + token);
     }
     return this.httpHeaders;
@@ -32,6 +32,9 @@ export class ClienteService {
 
   private isNoAutorizado(e): boolean {
     if (e.status == 401) {
+      if (this.authService.isAuthenticated()) {
+        this.authService.logOut();
+      }
       this.router.navigate(['/login']);
       return true;
     }
@@ -126,7 +129,7 @@ export class ClienteService {
 
     let httpHeaders = new HttpHeaders();
     let token = this.authService.token;
-    if (token != null){
+    if (token != null) {
       httpHeaders = httpHeaders.append('Authorization', 'Bearer ' + token);
     }
 

@@ -5,6 +5,7 @@ import swal from "sweetalert2";
 import {DatePipe, NgIf, NgStyle} from "@angular/common";
 import {HttpEventType} from "@angular/common/http";
 import {ModalService} from "./modal.service";
+import {AuthService} from "../../usuarios/auth.service";
 
 @Component({
   selector: 'detalle-cliente',
@@ -27,6 +28,7 @@ export class DetalleComponent implements OnInit {
 
   constructor(
     private clienteService: ClienteService,
+    protected authService: AuthService,
     protected modalService: ModalService) {
   }
 

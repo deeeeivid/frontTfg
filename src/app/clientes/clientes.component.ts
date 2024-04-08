@@ -8,6 +8,7 @@ import {PaginatorComponent} from "../paginator/paginator.component";
 import {IPagina} from "../paginator/paginator.models";
 import {DetalleComponent} from "./detalle/detalle.component";
 import {ModalService} from "./detalle/modal.service";
+import {AuthService} from "../usuarios/auth.service";
 
 @Component({
   selector: 'app-clientes',
@@ -32,6 +33,7 @@ export class ClientesComponent implements OnInit {
   constructor(
     private clienteService: ClienteService,
     private modalService: ModalService,
+    public authService: AuthService,
     private activatedRoute: ActivatedRoute) {
   }
 
@@ -50,7 +52,7 @@ export class ClientesComponent implements OnInit {
 
     this.modalService.notificarUpload.subscribe(cliente => {
       this.clientes = this.clientes.map(clienteOriginal => {
-        if (cliente.id == clienteOriginal.id){
+        if (cliente.id == clienteOriginal.id) {
           clienteOriginal.foto = cliente.foto;
         }
         return clienteOriginal;
