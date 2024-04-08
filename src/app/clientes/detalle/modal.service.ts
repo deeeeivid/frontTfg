@@ -12,7 +12,7 @@ export class ModalService {
   constructor() {
   }
 
-  get notificarUpload(): EventEmitter<any>{
+  get notificarUpload(): EventEmitter<any> {
     return this._notificarUpload;
   }
 
