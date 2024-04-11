@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
       },
       error => {
         if (error.status == 401 || error.status == 403) {
+          this.router.navigate(['/login']);
           swal.fire('Error Login', `Usuario o clave incorrecta`, 'error');
         }
       }
