@@ -9,7 +9,6 @@ import swal from "sweetalert2";
 })
 export class AuthService {
 
-  private httpHeaders = new HttpHeaders({'Content-type': 'application/json'});
   private _usuario: Usuario;
   private _token: string;
 
@@ -38,7 +37,7 @@ export class AuthService {
 
   login(usuario: Usuario): Observable<any> {
     let urlEndpoint = 'http://localhost:8080/auth/generateToken';
-    return this.http.post(urlEndpoint, usuario, {headers: this.httpHeaders});
+    return this.http.post(urlEndpoint, usuario);
   }
 
   guardarSessionStorage(accessToken: string) {
