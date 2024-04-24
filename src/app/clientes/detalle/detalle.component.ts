@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Cliente} from "../cliente";
 import {ClienteService} from "../cliente.service";
 import swal from "sweetalert2";
-import {DatePipe, NgIf, NgStyle} from "@angular/common";
+import {DatePipe, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {HttpEventType} from "@angular/common/http";
 import {ModalService} from "./modal.service";
 import {AuthService} from "../../usuarios/auth.service";
@@ -13,7 +13,8 @@ import {AuthService} from "../../usuarios/auth.service";
   imports: [
     DatePipe,
     NgIf,
-    NgStyle
+    NgStyle,
+    NgForOf
   ],
   templateUrl: './detalle.component.html',
   styleUrl: './detalle.component.css'

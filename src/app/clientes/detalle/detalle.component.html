@@ -45,6 +45,32 @@
                      class="img-thumbnail rounded">
               </div>
             </div>
+            <div class="row">
+
+              <div class="alert alert-info my-4" *ngIf="cliente.facturas.length==0">
+                No hay facturas asignadas para {{ cliente.nombre }} {{ cliente.apellido }}
+              </div>
+
+              <table class="table table-bordered table-striped my-4"
+                     *ngIf="cliente.facturas.length>0">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>DESCRIPCIÓN</th>
+                  <th>FECHA</th>
+                  <th>TOTAL</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let factura of cliente.facturas">
+                  <td>{{ factura.id }}</td>
+                  <td>{{ factura.descripcion }}</td>
+                  <td>{{ factura.createAt }}</td>
+                  <td>{{ factura.total }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
