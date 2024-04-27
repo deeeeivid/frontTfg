@@ -6,6 +6,7 @@ import {DatePipe, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {HttpEventType} from "@angular/common/http";
 import {ModalService} from "./modal.service";
 import {AuthService} from "../../usuarios/auth.service";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'detalle-cliente',
@@ -14,7 +15,8 @@ import {AuthService} from "../../usuarios/auth.service";
     DatePipe,
     NgIf,
     NgStyle,
-    NgForOf
+    NgForOf,
+    RouterLink
   ],
   templateUrl: './detalle.component.html',
   styleUrl: './detalle.component.css'
