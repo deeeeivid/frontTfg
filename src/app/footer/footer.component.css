@@ -1,5 +1,5 @@
 .footer {
-  position: page;
+  position: absolute !important;
   bottom: 0;
   height: 60px;
   width: 100%;
