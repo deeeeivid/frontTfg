@@ -1,12 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {Factura} from "./models/factura";
 import {ClienteService} from "../clientes/cliente.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {NgIf} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-facturas',
   standalone: true,
-  imports: [],
+  imports: [
+    NgIf,
+    FormsModule,
+    RouterLink
+  ],
   templateUrl: './facturas.component.html'
 })
 export class FacturasComponent implements OnInit {
