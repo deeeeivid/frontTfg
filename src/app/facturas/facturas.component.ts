@@ -7,7 +7,9 @@ import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {map, Observable, startWith} from "rxjs";
+import {flatMap, map, Observable} from "rxjs";
+import {FacturaService} from "./services/factura.service";
+import {Producto} from "./models/producto";
 
 @Component({
   selector: 'app-facturas',
@@ -33,11 +35,11 @@ export class FacturasComponent implements OnInit {
   factura = new Factura();
 
   autocomplete = new FormControl();
-  productos: string[] = ['Mesa', 'Silla', 'Toldo', 'Sony'];
-  productosFiltrados: Observable<string[]>;
+  productosFiltrados: Observable<Producto[]>;
 
   constructor(
     private clienteService: ClienteService,
+    private facturaService: FacturaService,
     private activatedroute: ActivatedRoute
   ) {
   }
@@ -49,14 +51,17 @@ export class FacturasComponent implements OnInit {
     });
     this.productosFiltrados = this.autocomplete.valueChanges
       .pipe(
-        startWith(''),
-        map(value => this._filter(value))
+        map(value => typeof value === 'string' ? value : value.nombre),
+        flatMap(value => value ? this._filter(value) : [])
       );
   }
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): Observable<Producto[]> {
     const filterValue = value.toLowerCase();
+    return this.facturaService.filtrarProductos(filterValue);
+  }
 
-    return this.productos.filter(option => option.toLowerCase().includes(filterValue));
+  mostrarNombre(producto?: Producto): string | undefined {
+    return producto ? producto.nombre : undefined;
   }
 }
