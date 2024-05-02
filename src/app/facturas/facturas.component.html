@@ -4,7 +4,7 @@
     <h4 class="card-title">
       <a [routerLink]="['/clientes']" class="btn btn-light btn-xs">&laquo; volver</a>
     </h4>
-    <form>
+    <form #facturaForm="ngForm">
 
       <div class="form-group row" *ngIf="factura.cliente">
         <label class="col-sm-2 col-form-label">Cliente</label>
@@ -17,7 +17,12 @@
       <div class="form-group row my-2">
         <label class="col-sm-2 col-form-label">Descripción</label>
         <div class="col-sm-6">
-          <input type="text" name="descripcion" [(ngModel)]="factura.descripcion" class="form-control"/>
+          <input type="text" name="descripcion" [(ngModel)]="factura.descripcion" class="form-control" required
+                 #descripcion="ngModel"/>
+          <div class="alert alert-danger" *ngIf="descripcion.invalid && descripcion.touched || descripcion.invalid &&
+           facturaForm.submitted">
+            La descripcion es requerida.
+          </div>
         </div>
       </div>
 
@@ -41,6 +46,9 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
+          <div class="alert alert-danger" *ngIf="autocomplete.invalid && facturaForm.submitted">
+            La factura tiene que tener productos.
+          </div>
         </div>
       </div>
 
@@ -79,7 +87,7 @@
 
       <div class="form-group row">
         <div class="col-sm-6">
-          <input type="submit" value="Crear Factura" (click)="create()" class="btn btn-secondary"/>
+          <input type="submit" value="Crear Factura" (click)="create(facturaForm)" class="btn btn-secondary"/>
         </div>
       </div>
 
