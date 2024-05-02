@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Cliente} from "./cliente";
+import {Cliente} from "./models/cliente";
 import {DatePipe, NgForOf, NgIf, UpperCasePipe} from "@angular/common";
 import {ClienteService} from "./cliente.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";

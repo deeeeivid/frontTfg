@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Cliente} from "./cliente";
+import {Cliente} from "./models/cliente";
 import {catchError, map, Observable, throwError} from "rxjs";
 import {HttpClient, HttpEvent, HttpHeaders, HttpRequest} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Region} from "./region";
+import {Region} from "./models/region";
 import {AuthService} from "../usuarios/auth.service";
 
 @Injectable({

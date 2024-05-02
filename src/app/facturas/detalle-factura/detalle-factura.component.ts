@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FacturaService} from "./services/factura.service";
+import {FacturaService} from "../services/factura.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
-import {Factura} from "./models/factura";
+import {Factura} from "../models/factura";
 import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
