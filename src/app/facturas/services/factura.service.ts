@@ -18,6 +18,10 @@ export class FacturaService {
     return this.http.get<Factura>(`${this.urlEndPoint}/${id}`);
   }
 
+  create(factura: Factura): Observable<Factura> {
+    return this.http.post<Factura>(this.urlEndPoint, factura);
+  }
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.urlEndPoint}/${id}`);
   }

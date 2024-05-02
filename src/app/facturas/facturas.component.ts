@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Factura} from "./models/factura";
 import {ClienteService} from "../clientes/cliente.service";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
@@ -16,6 +16,7 @@ import {flatMap, map, Observable} from "rxjs";
 import {FacturaService} from "./services/factura.service";
 import {Producto} from "./models/producto";
 import {ItemFactura} from "./models/item-factura";
+import swal from "sweetalert2";
 
 @Component({
   selector: 'app-facturas',
@@ -45,6 +46,7 @@ export class FacturasComponent implements OnInit {
 
   constructor(
     private clienteService: ClienteService,
+    private router: Router,
     private facturaService: FacturaService,
     private activatedroute: ActivatedRoute
   ) {
@@ -124,5 +126,13 @@ export class FacturasComponent implements OnInit {
 
   eliminarItemFactura(id: number) {
     this.factura.items = this.factura.items.filter((item: ItemFactura) => id != item.producto.id);
+  }
+
+  create(): void {
+    console.log(this.factura);
+    this.facturaService.create(this.factura).subscribe(factura => {
+      swal.fire(this.titulo, `Factura ${factura.descripcion} creada con exito`, 'success');
+      this.router.navigate(['/clientes']);
+    });
   }
 }
