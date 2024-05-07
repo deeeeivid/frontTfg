@@ -46,7 +46,7 @@
               </div>
             </div>
 
-            <div class="row" *ngIf="authService.hasRole('ROLE_ADMIN')">
+            <div class="row my-4" *ngIf="authService.hasRole('ROLE_ADMIN')">
               <button type="button" class="btn btn-success btn-sm"
                       [routerLink]="['/facturas/form', cliente.id]">CREAR FACTURA
               </button>

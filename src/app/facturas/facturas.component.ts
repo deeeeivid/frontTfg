@@ -75,7 +75,6 @@ export class FacturasComponent implements OnInit {
 
   seleccionarProducto(event: MatAutocompleteSelectedEvent): void {
     let producto = event.option.value as Producto;
-    console.log(producto);
 
     if (this.existeItem(producto.id)) {
       this.incrementaCantidad(producto.id);
@@ -129,8 +128,6 @@ export class FacturasComponent implements OnInit {
   }
 
   create(facturaForm): void {
-    console.log(this.factura);
-
     if (this.factura.items.length == 0) {
       this.autocomplete.setErrors({'invalid': true});
     }

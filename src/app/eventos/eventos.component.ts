@@ -8,10 +8,11 @@ import {NgForOf, NgIf} from "@angular/common";
     NgForOf,
     NgIf
   ],
-  templateUrl: './directiva.component.html'
+  templateUrl: './eventos.component.html'
 })
-export class DirectivaComponent {
-  listaCurso = ['TypeScript', 'JavaScript', 'Java', 'C#', 'PHP'];
+export class EventosComponent {
+  eventos = ['Boda Torreon El Pardo','Klandestino Ibiza', 'Batán', 'Aravaca', 'Hacke Club', 'Independance Club', 'Sala On', 'Quinns', 'Island',
+    'Rita La Cantaora', 'Ego Club', 'Comunion Parla'];
   habilitar = true;
 
   setHabilitar() {

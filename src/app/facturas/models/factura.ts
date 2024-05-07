@@ -13,7 +13,7 @@ export class Factura {
   calcularGranTotal(): number{
     this.total = 0;
     this.items.forEach((item: ItemFactura) => {
-      this.total += this.total + item.calcularImporte();
+      this.total += item.calcularImporte();
     });
     return this.total;
   }

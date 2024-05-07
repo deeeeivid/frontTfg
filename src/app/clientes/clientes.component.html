@@ -1,9 +1,9 @@
 <detalle-cliente *ngIf="clienteSeleccionado" [cliente]="clienteSeleccionado"></detalle-cliente>
 <div class="card border-primary mb-3">
-  <div class="card-header">CLIENTES</div>
+  <div class="card-header text-xl-center">
+    <h5 class="card-title">CLIENTES</h5>
+  </div>
   <div class="card-body text-primary">
-    <h5 class="card-title">LISTADO DE CLIENTES</h5>
-
     <div class="my-2 text-left">
       <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-rounded btn-primary" type="button"
               [routerLink]="['/clientes/form']">Crear

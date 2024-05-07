@@ -17,7 +17,7 @@ import swal from "sweetalert2";
   }
 )
 export class HeaderComponent {
-  title = 'Dmzeta App';
+  title = 'DMAPP';
 
   constructor(protected authService: AuthService, private router: Router) {
   }
