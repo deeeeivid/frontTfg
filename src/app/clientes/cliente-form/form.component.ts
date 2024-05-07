@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {Cliente} from "./models/cliente";
+import {Cliente} from "../models/cliente";
 import {FormsModule} from "@angular/forms";
-import {ClienteService} from "./cliente.service";
+import {ClienteService} from "../cliente.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import swal from 'sweetalert2';
 import {NgForOf, NgIf} from "@angular/common";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
-import {Region} from "./models/region";
+import {Region} from "../models/region";
 
 @Component({
   selector: 'app-form',
