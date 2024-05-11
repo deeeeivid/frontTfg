@@ -7,20 +7,27 @@ import {RoleGuard} from "./usuarios/guards/role.guard";
 import {AuthGuard} from "./usuarios/guards/auth.guard";
 import {DetalleFacturaComponent} from "./facturas/detalle-factura/detalle-factura.component";
 import {FacturasComponent} from "./facturas/facturas.component";
+import {ReservasComponent} from "./reservas/reservas.component";
 
 export const routes: Routes = [
-  {path: '', redirectTo: '/clientes', pathMatch: 'full'},
-  {path: 'directivas', component: EventosComponent},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: 'eventos', component: EventosComponent},
+  {path: 'reservas', component: ReservasComponent},
   {path: 'clientes', component: ClientesComponent},
   {path: 'clientes/page/:page', component: ClientesComponent},
-  {path: 'clientes/form', component: FormComponent, canActivate: [AuthGuard, RoleGuard], data: {role: 'ROLE_ADMIN'}},
+  {path: 'login', component: LoginComponent},
+  {
+    path: 'clientes/form',
+    component: FormComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: {role: 'ROLE_ADMIN'}
+  },
   {
     path: 'clientes/form/:id',
     component: FormComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: {role: 'ROLE_ADMIN'}
   },
-  {path: 'login', component: LoginComponent},
   {
     path: 'facturas/:id',
     component: DetalleFacturaComponent,
