@@ -1,126 +1,47 @@
-<ul class="alert alert-danger" *ngIf="errores?.length > 0">
-  <li *ngFor="let error of errores">
-    {{ error }}
-  </li>
-</ul>
-
-<div class="card bg-dark text-white">
-  <div class="card-header">{{ titulo }}</div>
-  <div class="card-body">
-    <form #reservaForm="ngForm">
-
-      <div class="form-group row my-2">
-        <label class="col-form-label col-sm-2">Nombre</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="reserva.nombre" name="nombre" #nombre="ngModel">
-          <div class="alert alert-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
-            <div *ngIf="nombre.errors.required">
-              Nombre es requerido
-            </div>
-            <div *ngIf="nombre.errors.minlength">
-              Nombre debe tener al menos cuatro caracteres
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group row my-2">
-        <label class="col-form-label col-sm-2">Apellido</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="reserva.apellido" name="apellido" #apellido="ngModel">
-          <div class="alert alert-danger" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
-            <div *ngIf="apellido.errors.required">
-              Apellido es requerido
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group row my-2">
-        <label class="col-form-label col-sm-2">Email</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="reserva.email" name="email" #email="ngModel">
-          <div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
-            <div *ngIf="email.errors.required">
-              Email es requerido
-            </div>
-            <div *ngIf="email.errors.email">
-              Email debe tener un formato válido
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group row my-2">
-        <label class="col-form-label col-sm-2">Fecha</label>
-        <div class="col-sm-6">
-          <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="reserva.fechaEvento" name="createAt"
-                 style="display: inline; width: 300px">
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </div>
-      </div>
-
-
-      <div class="form-group row my-2">
-        <label class="col-form-label col-sm-2">Tipo Evento</label>
-        <div class="col-sm-6">
-          <select class="form-control" [(ngModel)]="reserva.tipoEvento" [compareWith]="compararTipoEvento"
-                  name="tipoEvento"
-                  style="width: 500px">
-            <option [ngValue]="undefined">--- Seleccione un tipo ---</option>
-            <option *ngFor="let tipo of tipos" [ngValue]="tipo">{{ tipo.nombre }}</option>
-          </select>
-        </div>
-      </div>
-
-
-      <div class="form-group row my-2">
-        <label class="col-form-label col-sm-2">Género Musical</label>
-        <div class="col-sm-6">
-          <select class="form-control" [(ngModel)]="reserva.generoMusical" [compareWith]="compararGeneroMusical"
-                  name="generoMusical"
-                  style="width: 500px">
-            <option [ngValue]="undefined">--- Seleccione un género ---</option>
-            <option *ngFor="let genero of generos" [ngValue]="genero">{{ genero.nombre }}</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group row my-2">
-        <label class="col-form-label col-sm-2">Rango Edad</label>
-        <div class="col-sm-6">
-          <select class="form-control" [(ngModel)]="reserva.rangoEdad" [compareWith]="compararRangoEdad"
-                  name="rangoEdad"
-                  style="width: 500px">
-            <option [ngValue]="undefined">--- Seleccione un rango de edad ---</option>
-            <option *ngFor="let rango of rangos" [ngValue]="rango">{{ rango.nombre }}</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Observación</label>
-        <div class="col-sm-6">
-          <textarea name="observacion" [(ngModel)]="reserva.observacion" class="form-control"></textarea>
-        </div>
-      </div>
-
-      <div class="form-group my-3">
-        <div class="col-sm-8">
-          <button class="btn btn-primary" role="button" (click)='create()' *ngIf="!reserva.id else elseBlock"
-                  [disabled]="!reservaForm.form.valid">Crear
+<div class="card border-primary mb-3">
+  <div class="card-header text-xl-center">
+    <h5 class="card-title">RESERVAS</h5>
+  </div>
+  <div class="card-body text-primary py-1">
+    <div class="my-4 text-left">
+      <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-rounded btn-primary" type="button"
+              [routerLink]="['/reserva']">Crear
+        reserva
+      </button>
+    </div>
+    <div *ngIf="reservas?.length == 0" class="alert alert-info">
+      No hay registros en la base de datos.
+    </div>
+    <table class="table table-bordered table-striped text-center align-middle" *ngIf="reservas?.length > 0">
+      <thead>
+      <tr>
+        <th>TIPO EVENTO</th>
+        <th>NOMBRE</th>
+        <th>EMAIL</th>
+        <th>FECHA</th>
+        <th *ngIf="authService.hasRole('ROLE_ADMIN')"></th>
+        <th *ngIf="authService.hasRole('ROLE_ADMIN')"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let reserva of reservas">
+        <td> {{ reserva.tipoEvento.nombre | uppercase }}</td>
+        <td> {{ reserva.nombre | uppercase }}</td>
+        <td> {{ reserva.email }}</td>
+        <td> {{ reserva.fechaEvento | date:"EEEE, dd/MM/yyyy" }}</td>
+        <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+          <button type="button" name="editar" [routerLink]="['/reservas/', reserva.id]"
+                  class="btn btn-primary btn-sm">
+            VER
           </button>
-
-          <ng-template #elseBlock>
-            <button class="btn btn-primary" role="button" (click)="update()" [disabled]="!reservaForm.form.valid">
-              Editar
-            </button>
-          </ng-template>
-        </div>
-      </div>
-
-
-    </form>
+        </td>
+        <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+          <button type="button" name="eliminar" (click)="delete(reserva)" class="btn btn-danger btn-sm">ELIMINAR
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <pag-reservas-nav *ngIf="paginador" [paginador]="paginador"></pag-reservas-nav>
   </div>
 </div>

@@ -2,12 +2,13 @@ export class Reserva {
   id: number;
   nombre: string;
   apellido: string;
-  fechaEvento: string;
   email: string;
-  tipoEvento: TipoEvento;
-  generoMusical: GeneroMusical[];
-  rangoEdad: RangoEdad[];
+  fechaEvento: string;
+  ubicacion: string;
   observacion: string;
+  tipoEvento: TipoEvento;
+  generoMusical: GeneroMusical;
+  rangoEdad: RangoEdad;
 }
 
 export class TipoEvento {

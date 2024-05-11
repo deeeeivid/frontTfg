@@ -1,116 +1,84 @@
 import {Component, OnInit} from '@angular/core';
-import {DatePipe, NgForOf, NgIf, NgStyle} from "@angular/common";
-import swal from "sweetalert2";
-import {Router, RouterLink} from "@angular/router";
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatSuffix} from "@angular/material/form-field";
-import {MatInput} from "@angular/material/input";
-import {GeneroMusical, RangoEdad, Reserva, TipoEvento} from "./reserva";
+import {DatePipe, NgForOf, NgIf, UpperCasePipe} from "@angular/common";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {IPagina} from "../paginator/paginator.models";
+import {AuthService} from "../usuarios/auth.service";
+import {Reserva} from "./models/reserva";
 import {ReservaService} from "./reserva.service";
+import Swal from "sweetalert2";
+import {ModalService} from "../clientes/detalle/modal.service";
+import {PaginatorComponent} from "../paginator-reservas/pag-reservas.component";
 
 @Component({
   selector: 'app-reservas',
   standalone: true,
+  templateUrl: './reservas.component.html',
   imports: [
     NgForOf,
-    NgIf,
-    DatePipe,
-    NgStyle,
     RouterLink,
-    MatDatepickerToggle,
-    MatDatepicker,
-    ReactiveFormsModule,
-    FormsModule,
-    MatDatepickerInput,
-    MatSuffix,
-    MatInput
-  ],
-  templateUrl: './reservas.component.html'
+    NgIf,
+    UpperCasePipe,
+    DatePipe,
+    PaginatorComponent,
+    PaginatorComponent,
+  ]
 })
 export class ReservasComponent implements OnInit {
 
-  public titulo = "Nueva Reserva";
-  public reserva = new Reserva();
-  public tipos: TipoEvento[];
-  public generos: GeneroMusical[];
-  public rangos: RangoEdad[];
-  public errores: string[];
+  reservas: Reserva[];
+  paginador: IPagina;
 
   constructor(
     private reservaService: ReservaService,
-    private router: Router) {
-
+    public authService: AuthService,
+    private modalService : ModalService,
+    private activatedRoute: ActivatedRoute) {
   }
 
-  ngOnInit(): void {
-    this.cargarTipoEventos();
-    this.cargarGenerosMusicales();
-    this.cargarRangoEdades();
-  }
-
-
-  cargarTipoEventos() {
-    this.reservaService.getTipoEventos().subscribe(tipos => {
-      this.tipos = tipos;
+  ngOnInit() {
+    this.activatedRoute.paramMap.subscribe(params => {
+      let page: number = +params.get('page');
+      if (!page) {
+        page = 0;
+      }
+      this.reservaService.getReservas(page)
+        .subscribe(response => {
+          this.reservas = response.content as Reserva[];
+          this.paginador = response;
+        });
     });
+
   }
 
-  cargarGenerosMusicales() {
-    this.reservaService.getGenerosMusicales().subscribe(generos => {
-      this.generos = generos;
-    });
-  }
-
-  cargarRangoEdades() {
-    this.reservaService.getRangoEdades().subscribe(rangos => {
-      this.rangos = rangos;
-    });
-  }
-
-  create(): void {
-    this.reservaService.create(this.reserva).subscribe(
-      reserva => {
-        this.router.navigate(['/clientes'])
-        swal.fire('Nueva reserva', `La reserva ha sido creada con éxito!`, 'success')
+  delete(reserva: Reserva) {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
       },
-      error => {
-        this.errores = error.error.errors as string[];
-        console.error('Codigo del error ' + error.status);
-        console.error(error.error.errors);
-      });
+      buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+      title: "¿Estás seguro?",
+      text: `¿Seguro que desea eliminar la reserva #${reserva.id} hecha por ${reserva.nombre.toUpperCase()} el día ${reserva.fechaEvento} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reservaService.delete(reserva.id).subscribe(() => {
+          this.reservas = this.reservas.filter(cli => cli !== reserva);
+          Swal.fire({
+            title: "Reserva eliminada!",
+            text: `Reserva ${reserva.id} hecha por ${reserva.nombre}, eliminada con éxito.`,
+            icon: "success"
+          });
+        })
+
+      }
+    });
   }
 
-  update(): void {
-    this.reservaService.update(this.reserva).subscribe(
-      json => {
-        this.router.navigate(['/clientes'])
-        swal.fire('Reserva actualizada', `${json.mensaje}: ${json.cliente.nombre}`, 'success')
-      }, error => {
-        this.errores = error.error.errors as string[];
-        console.error('Codigo del error ' + error.status);
-        console.error(error.error.errors);
-      });
-  }
-
-  compararTipoEvento(o1: TipoEvento, o2: TipoEvento): boolean {
-    if (o1 === undefined && o2 === undefined) {
-      return true;
-    }
-    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.id === o2.id;
-  }
-
-  compararGeneroMusical(o1: GeneroMusical, o2: GeneroMusical): boolean {
-    if (o1 === undefined && o2 === undefined) {
-      return true;
-    }
-    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.id === o2.id;
-  }
-
-  compararRangoEdad(o1: RangoEdad, o2: RangoEdad): boolean {
-    if (o1 === undefined && o2 === undefined) {
-      return true;
-    }
-    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.id === o2.id;
-  }
 }
