@@ -1,0 +1,52 @@
+<div class="card border-primary mb-3">
+  <div class="card-header text-xl-center">
+    <h5 class="card-title">RESERVAS PENDIENTES</h5>
+  </div>
+  <div class="card-body text-primary py-1">
+
+    <div *ngIf="reservasPendientes?.length == 0" class="alert alert-info">
+      No hay registros en la base de datos.
+    </div>
+    <table class="table table-bordered table-striped text-center align-middle" *ngIf="reservasPendientes?.length > 0">
+      <thead>
+      <tr>
+        <th>TIPO EVENTO</th>
+        <th>NOMBRE</th>
+        <th>EMAIL</th>
+        <th>FECHA</th>
+        <th *ngIf="authService.hasRole('ROLE_ADMIN')"></th>
+        <th *ngIf="authService.hasRole('ROLE_ADMIN')"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let reservaPendiente of reservasPendientes">
+        <td> {{ reservaPendiente.tipoEvento.nombre | uppercase }}</td>
+        <td> {{ reservaPendiente.nombre | uppercase }}</td>
+        <td> {{ reservaPendiente.email }}</td>
+        <td> {{ reservaPendiente.fechaEvento | date:"EEEE, dd/MM/yyyy" }}</td>
+        <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+          <button type="button" name="ver" [routerLink]="['/reservas/pendientes/', reservaPendiente.id]"
+                  class="btn btn-primary btn-sm">
+            VER
+          </button>
+        </td>
+
+        <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+          <button type="button" name="confirmar" (click)="crearReserva(reservaPendiente)"
+                  class="btn btn-primary btn-sm">
+            CONFIRMAR
+          </button>
+        </td>
+
+        <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+          <button type="button" name="eliminar" (click)="eliminarReservaPendiente(reservaPendiente)"
+                  class="btn btn-danger btn-sm">ELIMINAR
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <pag-reservas-nav *ngIf="paginador" [paginador]="paginador"></pag-reservas-nav>
+  </div>
+</div>
+

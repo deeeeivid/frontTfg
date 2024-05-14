@@ -10,12 +10,17 @@ import {FacturasComponent} from "./facturas/facturas.component";
 import {ReservaComponent} from "./reservas/form/reserva.component";
 import {ReservasComponent} from "./reservas/reservas.component";
 import {DetalleReservaComponent} from "./reservas/detalle-reserva/detalle-reserva.component";
+import {
+  DetalleReservaPendienteComponent
+} from "./reservas-pendientes/detalle-reserva-pendiente/detalle-reserva-pendiente.component";
+import {ReservasPendientesComponent} from "./reservas-pendientes/reservas-pendientes.component";
 
 export const routes: Routes = [
   {path: '', redirectTo: '/reserva', pathMatch: 'full'},
   {path: 'eventos', component: EventosComponent},
   {path: 'reserva', component: ReservaComponent,},
   {path: 'reservas', component: ReservasComponent},
+  {path: 'reservas/pendientes', component: ReservasPendientesComponent},
   {path: 'reservas/page/:page', component: ReservasComponent},
   {path: 'clientes', component: ClientesComponent},
   {path: 'clientes/page/:page', component: ClientesComponent},
@@ -46,6 +51,12 @@ export const routes: Routes = [
   }, {
     path: 'reservas/:id',
     component: DetalleReservaComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: {role: 'ROLE_ADMIN'}
+  },
+  {
+    path: 'reservas/pendientes/:id',
+    component: DetalleReservaPendienteComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: {role: 'ROLE_ADMIN'}
   }

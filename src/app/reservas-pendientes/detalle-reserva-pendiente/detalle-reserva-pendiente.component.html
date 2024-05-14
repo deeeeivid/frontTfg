@@ -1,0 +1,35 @@
+<div class="card bg-light" *ngIf="reservaPendiente">
+  <div class="card-header">{{ titulo }}: {{ reservaPendiente.id }}</div>
+  <div class="card-body">
+    <h4 class="card-title">
+      <a [routerLink]="['/reservas/pendientes']" class="btn btn-light btn-xs">&laquo; volver</a>
+    </h4>
+
+    <ul class="list-group my-2">
+      <li class="list-group-item list-group-item-primary">Datos del cliente</li>
+      <li class="list-group-item">{{ reservaPendiente.nombre }}</li>
+      <li class="list-group-item">{{ reservaPendiente.apellido }}</li>
+      <li class="list-group-item">{{ reservaPendiente.email }}</li>
+    </ul>
+
+    <ul class="list-group my-2">
+      <li class="list-group-item list-group-item-primary">Datos de la reserva pendiente</li>
+      <li class="list-group-item">Fecha del evento: {{ reservaPendiente.fechaEvento }}</li>
+      <li class="list-group-item">Ubicacion: {{ reservaPendiente.ubicacion }}</li>
+      <li class="list-group-item">Tipo de evento: {{ reservaPendiente.tipoEvento.nombre }}</li>
+      <li class="list-group-item">Genero musical: {{ reservaPendiente.generoMusical.nombre }}</li>
+      <li class="list-group-item">Rango de edad: {{ reservaPendiente.rangoEdad.nombre }}</li>
+    </ul>
+
+
+    <div class="card border-info mb-4" style="max-width: 1700px;">
+      <div class="card card-header">
+        Observaciones
+      </div>
+      <div class="card card-body">
+        <p *ngIf="!reservaPendiente.observacion">No tiene observación</p>
+        <p *ngIf="reservaPendiente.observacion">{{ reservaPendiente.observacion }}</p>
+      </div>
+    </div>
+  </div>
+</div>
