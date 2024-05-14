@@ -44,7 +44,7 @@
         <td> {{ cliente.nombre | uppercase }}</td>
         <td> {{ cliente.apellido | uppercase }}</td>
         <td> {{ cliente.email }}</td>
-        <td> {{ cliente.createAt | date:"EEEE, dd/MM/yyyy" }}</td>
+        <td> {{ cliente.fechaAlta | date:"EEEE, dd/MM/yyyy" }}</td>
         <td *ngIf="authService.hasRole('ROLE_ADMIN')">
           <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/facturas/form', cliente.id]">CREAR
             FACTURA

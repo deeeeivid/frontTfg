@@ -8,7 +8,7 @@ export class Factura {
   items: Array<ItemFactura> = [];
   cliente: Cliente;
   total: number;
-  createAt: string;
+  fechaAlta: string;
 
   calcularGranTotal(): number{
     this.total = 0;

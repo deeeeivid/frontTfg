@@ -5,7 +5,7 @@ export class Cliente {
   id: number;
   nombre: string;
   apellido: string;
-  createAt: string;
+  fechaAlta: string;
   email: string;
   foto: string;
   region: Region;

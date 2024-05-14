@@ -16,7 +16,7 @@
                   <li class="list-group-item">{{ cliente.nombre }}</li>
                   <li class="list-group-item">{{ cliente.apellido }}</li>
                   <li class="list-group-item">{{ cliente.email }}</li>
-                  <li class="list-group-item">{{ cliente.createAt | date:"fullDate" }}</li>
+                  <li class="list-group-item">{{ cliente.fechaAlta | date:"fullDate" }}</li>
                   <li class="list-group-item">{{ cliente.region.nombre }}</li>
                 </ul>
                 <div *ngIf="authService.hasRole('ROLE_ADMIN')" class="input-group mb-3">
@@ -72,7 +72,7 @@
                 <tr *ngFor="let factura of cliente.facturas">
                   <td>{{ factura.id }}</td>
                   <td>{{ factura.descripcion }}</td>
-                  <td>{{ factura.createAt }}</td>
+                  <td>{{ factura.fechaAlta }}</td>
                   <td>{{ factura.total }}</td>
                   <td>
                     <button class="btn btn-primary btn-sm" type="button"
