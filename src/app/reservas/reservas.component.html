@@ -3,12 +3,6 @@
     <h5 class="card-title">RESERVAS</h5>
   </div>
   <div class="card-body text-primary py-1">
-    <div class="my-4 text-left">
-      <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-rounded btn-primary" type="button"
-              [routerLink]="['/reserva']">Crear
-        reserva
-      </button>
-    </div>
     <div *ngIf="reservas?.length == 0" class="alert alert-info">
       No hay registros en la base de datos.
     </div>
@@ -30,13 +24,14 @@
         <td> {{ reserva.email }}</td>
         <td> {{ reserva.fechaEvento | date:"EEEE, dd/MM/yyyy" }}</td>
         <td *ngIf="authService.hasRole('ROLE_ADMIN')">
-          <button type="button" name="editar" [routerLink]="['/reservas/', reserva.id]"
+          <button type="button" name="ver" [routerLink]="['/reservas/', reserva.id]"
                   class="btn btn-primary btn-sm">
             VER
           </button>
         </td>
+
         <td *ngIf="authService.hasRole('ROLE_ADMIN')">
-          <button type="button" name="eliminar" (click)="delete(reserva)" class="btn btn-danger btn-sm">ELIMINAR
+          <button type="button" name="eliminar" (click)="eliminar(reserva)" class="btn btn-danger btn-sm">ELIMINAR
           </button>
         </td>
       </tr>
@@ -45,3 +40,4 @@
     <pag-reservas-nav *ngIf="paginador" [paginador]="paginador"></pag-reservas-nav>
   </div>
 </div>
+

@@ -32,8 +32,8 @@ export class ReservaService {
     );
   }
 
-  create(reserva: Reserva): Observable<Reserva> {
-    return this.http.post(this.urlEndpoint, reserva).pipe(
+  crearReservaPendiente(reserva: Reserva): Observable<Reserva> {
+    return this.http.post(`${this.urlEndpoint}/pendientes`, reserva).pipe(
       map((response: any) => response.reserva as Reserva),
       catchError(e => {
 
@@ -49,6 +49,7 @@ export class ReservaService {
       })
     );
   }
+
 
   update(reserva: Reserva): Observable<any> {
     return this.http.put<any>(`${this.urlEndpoint}/${reserva.id}`, reserva).pipe(
@@ -67,13 +68,12 @@ export class ReservaService {
     );
   }
 
-  delete(id: number): Observable<Reserva> {
+  eliminar(id: number): Observable<Reserva> {
     return this.http.delete<Reserva>(`${this.urlEndpoint}/${id}`).pipe(
       catchError(e => {
         if (e.error.mensaje) {
           console.error(e.error.mensaje);
         }
-
         return throwError(e);
       })
     );

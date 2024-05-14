@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DatePipe, NgForOf, NgIf, UpperCasePipe} from "@angular/common";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {IPagina} from "../paginator/paginator.models";
 import {AuthService} from "../usuarios/auth.service";
 import {Reserva} from "./models/reserva";
@@ -25,17 +25,20 @@ import {PaginatorComponent} from "../paginator-reservas/pag-reservas.component";
 })
 export class ReservasComponent implements OnInit {
 
+  public reserva = new Reserva();
   reservas: Reserva[];
   paginador: IPagina;
 
   constructor(
     private reservaService: ReservaService,
     public authService: AuthService,
-    private modalService : ModalService,
+    private router: Router,
+    private modalService: ModalService,
     private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.cargarReserva();
     this.activatedRoute.paramMap.subscribe(params => {
       let page: number = +params.get('page');
       if (!page) {
@@ -47,10 +50,20 @@ export class ReservasComponent implements OnInit {
           this.paginador = response;
         });
     });
-
   }
 
-  delete(reserva: Reserva) {
+  cargarReserva(): void {
+    this.activatedRoute.params.subscribe(params => {
+      let id = params['id'];
+      if (id) {
+        this.reservaService.getReserva(id).subscribe(
+          (reserva) => this.reserva = reserva
+        )
+      }
+    });
+  }
+
+  eliminar(reserva: Reserva) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -68,7 +81,7 @@ export class ReservasComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        this.reservaService.delete(reserva.id).subscribe(() => {
+        this.reservaService.eliminar(reserva.id).subscribe(() => {
           this.reservas = this.reservas.filter(cli => cli !== reserva);
           Swal.fire({
             title: "Reserva eliminada!",

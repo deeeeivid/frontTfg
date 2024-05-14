@@ -31,7 +31,7 @@ import {ReservaService} from "../reserva.service";
 export class ReservaComponent implements OnInit {
 
   public titulo = "Nueva Reserva";
-  public reserva = new Reserva();
+  public reservaPendiente = new Reserva();
   public tipos: TipoEvento[];
   public generos: GeneroMusical[];
   public rangos: RangoEdad[];
@@ -45,19 +45,18 @@ export class ReservaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cargarReserva();
+    this.cargarReservaPendiente();
     this.cargarTipoEventos();
     this.cargarGenerosMusicales();
     this.cargarRangoEdades();
   }
 
-
-  cargarReserva(): void {
+  cargarReservaPendiente(): void {
     this.activatedRoute.params.subscribe(params => {
       let id = params['id'];
       if (id) {
         this.reservaService.getReserva(id).subscribe(
-          (reserva) => this.reserva = reserva
+          (reservaPendiente) => this.reservaPendiente = reservaPendiente
         )
       }
     });
@@ -81,8 +80,8 @@ export class ReservaComponent implements OnInit {
     });
   }
 
-  create(): void {
-    this.reservaService.create(this.reserva).subscribe(
+  crearReservaPendiente(): void {
+    this.reservaService.crearReservaPendiente(this.reservaPendiente).subscribe(
       reserva => {
         this.router.navigate(['/reservas'])
         swal.fire('Nueva reserva', `La reserva ha sido creada con éxito!`, 'success')
